@@ -1,5 +1,4 @@
-var http = require('http');
-var fs = require('fs');
+var http = require('http'), fs = require('fs');
 
 var filename;
 function extractFilenameAndData(url) {
@@ -29,11 +28,16 @@ var server = http.createServer(function (req, res) {
         res.end(`<h1> File \'${arr[1]}\' Saved! </h1>`);
     }
     else if(req.url !== '/favicon.ico' && req.url.startsWith('/download')) {  
+       res.setHeader('Content-disposition', 'attachment; filename=text.txt');
        res.writeHead(202, {'Content-Type': 'download'});
-       res.end('download will begin shortly', 'utf8', function(data){
+       fs.readFile('text.txt', 'utf8', function(err, data) {
+           if(err) throw err;
            console.log(data);
+           res.end(data); 
+        //    Alternatively
+        //    res.write(data);
+        //    res.end();
        });
-       res.end()
     }
     else if(req.url !== '/favicon.ico' && req.url.startsWith('/upload')) {
         var queryString = req.url ? req.url.split('?') : 'null';

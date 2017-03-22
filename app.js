@@ -20,5 +20,5 @@ var server = http.createServer(function (req, res) {
     }
 });
 
-server.listen(3000);
+server.listen(process.env.PORT || 3000); // heroku server port || local host port 
 console.log('server is running on port 3000');

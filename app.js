@@ -26,11 +26,14 @@ var server = http.createServer(function (req, res) {
         var arr = [];
         arr = extractFilenameAndData(req.url);
         fs.writeFile(arr[1], arr[0], function(err){});
-        res.end(`<h1> File \'${arr[1]}\' Saved! <a href="localhost:3000/${arr[1]}"> Download </a> </h1>`);
+        res.end(`<h1> File \'${arr[1]}\' Saved! </h1>`);
     }
     else if(req.url !== '/favicon.ico' && req.url.startsWith('/download')) {  
        res.writeHead(202, {'Content-Type': 'download'});
-       res.end(`__dirname/text.txt`, 'utf8', function(){});
+       res.end('download will begin shortly', 'utf8', function(data){
+           console.log(data);
+       });
+       res.end()
     }
     else if(req.url !== '/favicon.ico' && req.url.startsWith('/upload')) {
         var queryString = req.url ? req.url.split('?') : 'null';

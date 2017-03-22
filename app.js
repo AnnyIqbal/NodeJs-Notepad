@@ -28,9 +28,9 @@ var server = http.createServer(function (req, res) {
         res.end(`<h1> File \'${arr[1]}\' Saved! </h1>`);
     }
     else if(req.url !== '/favicon.ico' && req.url.startsWith('/download')) {  
-       res.setHeader('Content-disposition', 'attachment; filename=text.txt');
+       res.setHeader('Content-disposition', `attachment; filename=${filename}`);
        res.writeHead(202, {'Content-Type': 'download'});
-       fs.readFile('text.txt', 'utf8', function(err, data) {
+       fs.readFile(`${filename}`, 'utf8', function(err, data) {
            if(err) throw err;
            console.log(data);
            res.end(data); 

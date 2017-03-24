@@ -13,6 +13,16 @@ function extractFilenameAndData(url) {
     return arr;
 }
 
+function myfunc(res, data) {
+    res.setHeader('Content-disposition', `attachment; filename=${filename}`);
+                res.writeHead(202, {'Content-Type': 'download'});
+                fs.readFile(`${filename}`, 'utf8', function(err, data) {
+                    if(err) throw err;
+                    console.log(data);
+                    res.end(data); 
+                });
+}
+
 var server = http.createServer(function (req, res) {
     if(req.url !== '/favicon.ico' && req.url === '/') {
         fs.readFile('notepad.html', 'utf8', function(err, data) { // notepad rendered
@@ -25,7 +35,10 @@ var server = http.createServer(function (req, res) {
         var arr = [];
         arr = extractFilenameAndData(req.url);
         fs.writeFile(arr[1], arr[0], function(err){});
-        res.end(`<h1> File \'${arr[1]}\' Saved! </h1>`);
+        fs.readFile('saved.html', 'utf8', function(err, data) {
+            // res.write(`<h1> File \'${arr[1]}\' Saved! </h1> <br><br> ${data}`, 'utf8', function(res, data){});
+            res.end(`<h1> File \'${arr[1]}\' Saved! </h1> <br><br> ${data}`);
+        });
     }
     else if(req.url !== '/favicon.ico' && req.url.startsWith('/download')) {  
        res.setHeader('Content-disposition', `attachment; filename=${filename}`);
@@ -44,7 +57,7 @@ var server = http.createServer(function (req, res) {
         var upload = queryString[1].split('=');
         var done = upload[1].split('+').toString().replace(/,/g, ' ');
         fs.readFile(done, 'utf8', function(err, data) {
-            if(err) throw err;
+            // if(err) throw err;
             res.end(`<h1> File \'${done}\' Uploaded! </h1><h3> ${done} </h3><p> ${data} </p>`);
         });
     }

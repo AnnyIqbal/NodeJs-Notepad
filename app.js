@@ -1,4 +1,4 @@
-var http = require('http'), fs = require('fs');
+var http = require('http'), fs = require('fs'), cool = require('cool-ascii-faces');
 
 var filename;
 function extractFilenameAndData(url) {
@@ -60,6 +60,9 @@ var server = http.createServer(function (req, res) {
             // if(err) throw err;
             res.end(`<h1> File \'${done}\' Uploaded! </h1><h3> ${done} </h3><p> ${data} </p>`);
         });
+    }
+    else if(req.url !== '/favicon.ico' && req.url === '/cool') {
+            res.end(cool());
     }
 });
 

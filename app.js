@@ -1,4 +1,6 @@
-var http = require('http'), fs = require('fs'), cool = require('cool-ascii-faces');
+var cool = require('cool-ascii-faces');
+var http = require('http');
+var fs = require('fs');
 
 var filename;
 function extractFilenameAndData(url) {
